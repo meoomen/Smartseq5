@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#SBATCH -o /home/ies/%u/slurm_jobs/slurm_%j.log
-#SBATCH -e /home/ies/%u/slurm_jobs/slurm_%j.err
+#SBATCH -o ~/slurm_jobs/slurm_%j.log
+#SBATCH -e ~/slurm_jobs/slurm_%j.err
 #SBATCH -J RNAprocessing-dump
 #SBATCH -p normal_q
 #SBATCH -c 8
