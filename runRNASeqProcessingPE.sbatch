@@ -124,7 +124,7 @@ cp $temp_d/Aligned.Primary.Unique.BothReads.sorted.bam.bai $cwd_path/$id.FivePri
 
 echo "=========================================================="
 echo "Keeping only Read #2... [ $(date) ]"
-#Multimapping bam includes all alignments, not only primary ones
+#Multimapping bam includes all unique + multimapping alignments
 samtools view -f 128 -@ $(($cores - 1)) -b -o $temp_d/Aligned.Primary.Multimapping.Read2.bam $temp_d/Aligned.Primary.Multimapping.bam
 
 echo "=========================================================="
