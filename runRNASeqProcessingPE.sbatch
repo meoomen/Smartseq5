@@ -110,6 +110,7 @@ rm -r $temp_d/_STARgenome $temp_d/_STARpass1 $temp_d/$id.five_clean_1P.fastq.gz 
 echo "=========================================================="
 echo "Removing secondary alignments, singletons and unmapped reads... [ $(date) ]"
 samtools view -F 268 -@ $(($cores - 1)) $temp_d/Aligned.out.bam -o $temp_d/Aligned.Primary.Multimapping.bam
+## NOTE this only keeps the primary alignments, if you would like to keep all multimapping alignments use flag -F 0x08 instead
 
 echo "=========================================================="
 echo "Sorting, indexing and processing both stranded files... [ $(date) ]"
@@ -222,12 +223,14 @@ rm -r $temp_d/_STARgenome $temp_d/_STARpass1 $temp_d/$id.else_clean_1P.fastq.gz 
 echo "=========================================================="
 echo "Removing secondary alignments, singletons and unmapped reads... [ $(date) ]"
 samtools view -F 268 -@ $(($cores - 1)) $temp_d/Aligned.out.bam -o $temp_d/Aligned.Primary.Multimapping.bam
+## NOTE this only keeps the primary alignments, if you would like to keep all multimapping alignments use flag -F 0x08 instead
+
 
 #########################################
 #######starting unique analysis##########
 echo "=========================================================="
 echo "Splitting into uniquely-mapping and multimapping... [ $(date) ]"
-#Multimapping bam includes all alignments, not only primary ones
+#Multimapping bam includes all alignments, that is unique + primary multimappers
 samtools view -q 255 -@ $(($cores - 1)) -b -o $temp_d/primary.unique.bam $temp_d/Aligned.Primary.Multimapping.bam
 mv $temp_d/Aligned.Primary.Multimapping.bam $temp_d/all.multimapping.bam
 
@@ -301,12 +304,14 @@ rm -r $temp_d/_STARgenome $temp_d/_STARpass1 $temp_d/$id.all_clean_1P.fastq.gz $
 echo "=========================================================="
 echo "Removing secondary alignments, singletons and unmapped reads... [ $(date) ]"
 samtools view -F 268 -@ $(($cores - 1)) $temp_d/Aligned.out.bam -o $temp_d/Aligned.Primary.Multimapping.bam
+## NOTE this only keeps the primary alignments, if you would like to keep all multimapping alignments use flag -F 0x08 
+
 
 #########################################
 #######starting unique analysis##########
 echo "=========================================================="
 echo "Splitting into uniquely-mapping and multimapping... [ $(date) ]"
-#Multimapping bam includes all alignments, not only primary ones
+#Multimapping bam includes all alignments, that is unique and primary multimappers
 samtools view -q 255 -@ $(($cores - 1)) -b -o $temp_d/primary.unique.bam $temp_d/Aligned.Primary.Multimapping.bam
 mv $temp_d/Aligned.Primary.Multimapping.bam $temp_d/all.multimapping.bam
 
