@@ -101,6 +101,8 @@ echo "Aligning... [ $(date) ]"
 #Multimappers: all multimapping reads will be output, and only those with the top score will be considered primary alignments. Reads with more than 20 alignments will be discarded.
 #Output: not sorted, read pairs are adjacent
 STAR --runMode alignReads --runThreadN $cores --genomeDir $genome_dir --readFilesIn $temp_d/$id.five_clean_1P.fastq.gz $temp_d/$id.five_clean_2P.fastq.gz --readFilesCommand zcat --outFilterType BySJout --outFilterMultimapNmax 100 --alignSJoverhangMin 8 --alignSJDBoverhangMin 1 --outFilterMismatchNmax 999 --alignIntronMin 20 --alignIntronMax 1000000 --alignMatesGapMax 1000000 --outFileNamePrefix $temp_d/ --outMultimapperOrder Random --outSAMprimaryFlag AllBestScore --outSAMstrandField intronMotif --runRNGseed 23 --outSAMtype BAM Unsorted --quantMode GeneCounts --twopassMode Basic
+#NOTE because of parameter --outSAMprimaryFlag AllBestScore the primary alignment flag will be given to all alignment with best score (not just a single best alignment)
+
 mv $temp_d/Log.final.out $cwd_path/$id.Five_prime_Log.final.out
 mv $temp_d/ReadsPerGene.out.tab $cwd_path/$id.Five_prime_ReadsPerGene.out.tab
 mv $temp_d/SJ.out.tab $cwd_path/$id.Five_prime.SJ.out.tab
@@ -110,7 +112,7 @@ rm -r $temp_d/_STARgenome $temp_d/_STARpass1 $temp_d/$id.five_clean_1P.fastq.gz 
 echo "=========================================================="
 echo "Removing secondary alignments, singletons and unmapped reads... [ $(date) ]"
 samtools view -F 268 -@ $(($cores - 1)) $temp_d/Aligned.out.bam -o $temp_d/Aligned.Primary.Multimapping.bam
-## NOTE this only keeps the primary alignments, if you would like to keep all multimapping alignments use flag -F 0x08 instead
+## NOTE this only keeps the primary alignments, if you would like to keep all multimapping alignments use flag -F 0x08 instead. However because of STAR flag all multiple alignements with best score will have primary SAM flag 
 
 echo "=========================================================="
 echo "Sorting, indexing and processing both stranded files... [ $(date) ]"
@@ -212,6 +214,8 @@ rm $temp_d/$id\_else_1.fastq.gz $temp_d/$id\_else_2.fastq.gz
 echo "=========================================================="
 echo "Aligning... [ $(date) ]"
 STAR --runMode alignReads --runThreadN $cores --genomeDir $genome_dir --readFilesIn $temp_d/$id.else_clean_1P.fastq.gz $temp_d/$id.else_clean_2P.fastq.gz --readFilesCommand zcat --outFilterType BySJout --outFilterMultimapNmax 100 --alignSJoverhangMin 8 --alignSJDBoverhangMin 1 --outFilterMismatchNmax 999 --alignIntronMin 20 --alignIntronMax 1000000 --alignMatesGapMax 1000000 --outFileNamePrefix $temp_d/ --outMultimapperOrder Random --outSAMprimaryFlag AllBestScore --outSAMstrandField intronMotif --runRNGseed 23 --outSAMtype BAM Unsorted --quantMode GeneCounts --twopassMode Basic
+#NOTE because of parameter --outSAMprimaryFlag AllBestScore the primary alignment flag will be given to all alignment with best score (not just a single best alignment)
+
 mv $temp_d/Log.final.out $cwd_path/$id.Else_Log.final.out
 mv $temp_d/ReadsPerGene.out.tab $cwd_path/$id.Else_ReadsPerGene.out.tab
 mv $temp_d/SJ.out.tab $cwd_path/$id.Else.SJ.out.tab
@@ -291,6 +295,8 @@ rm $temp_d/$id\_all_1.fastq.gz $temp_d/$id\_all_2.fastq.gz
 echo "=========================================================="
 echo "Aligning... [ $(date) ]"
 STAR --runMode alignReads --runThreadN $cores --genomeDir $genome_dir --readFilesIn $temp_d/$id.all_clean_1P.fastq.gz $temp_d/$id.all_clean_2P.fastq.gz --readFilesCommand zcat --outFilterType BySJout --outFilterMultimapNmax 100 --alignSJoverhangMin 8 --alignSJDBoverhangMin 1 --outFilterMismatchNmax 999 --alignIntronMin 20 --alignIntronMax 1000000 --alignMatesGapMax 1000000 --outFileNamePrefix $temp_d/ --outMultimapperOrder Random --outSAMprimaryFlag AllBestScore --outSAMstrandField intronMotif --runRNGseed 23 --outSAMtype BAM Unsorted --quantMode GeneCounts --twopassMode Basic
+#NOTE because of parameter --outSAMprimaryFlag AllBestScore the primary alignment flag will be given to all alignment with best score (not just a single best alignment) 
+
 mv $temp_d/Log.final.out $cwd_path/$id.All_Log.final.out
 mv $temp_d/ReadsPerGene.out.tab $cwd_path/$id.All_ReadsPerGene.out.tab
 mv $temp_d/SJ.out.tab $cwd_path/$id.All.SJ.out.tab
@@ -304,7 +310,7 @@ rm -r $temp_d/_STARgenome $temp_d/_STARpass1 $temp_d/$id.all_clean_1P.fastq.gz $
 echo "=========================================================="
 echo "Removing secondary alignments, singletons and unmapped reads... [ $(date) ]"
 samtools view -F 268 -@ $(($cores - 1)) $temp_d/Aligned.out.bam -o $temp_d/Aligned.Primary.Multimapping.bam
-## NOTE this only keeps the primary alignments, if you would like to keep all multimapping alignments use flag -F 0x08 
+## NOTE this only keeps the primary alignments, if you would like to keep all multimapping alignments use flag -F 0x08.  
 
 
 #########################################
@@ -387,7 +393,7 @@ echo "Fixing mates for Picard... [ $(date) ]"
 picard FixMateInformation --QUIET true -I $temp_d/$id.bam
 
 echo "=========================================================="
-echo "Counting duplicates, they will not be removed... NOTE: Update optical values for Hiseq4000 generated data !!!  [ $(date) ]"
+echo "Counting duplicates, they will not be removed...  [ $(date) ]"
 picard MarkDuplicates --QUIET true -I $temp_d/$id.bam -O $temp_d/primary.unique.sorted.counted.bam -M $cwd_path/QC_Picard_duplicates.txt -REMOVE_DUPLICATES false -OPTICAL_DUPLICATE_PIXEL_DISTANCE $duplicate_pixel_dist
 
 echo "=========================================================="
