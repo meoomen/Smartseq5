@@ -7,4 +7,8 @@ Additionally, one can find the softwares and their versions used in the conda en
 
 For more information see the methods section of our manuscript.
 
-Please contact Marlies Oomen (marlies.oomen@helmholtz-munich.de) for any questions. 
+Please contact Marlies Oomen (marlies.oomen@helmholtz-munich.de) for any questions.
+
+### Looking for the shiny app? 
+We will have a website for easy exploring of our data through a shiny app. However, the website might be down or under construction when you're reading this. Want to run the app locally? Please visit https://github.com/meoomen/shiny_embryo for instructions, data and shiny scripts. 
+
