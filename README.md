@@ -1,5 +1,5 @@
 # Smartseq5
-Example scripts to aid the analysis of Smart-seq+5' data. 
+Example scripts to aid the analysis of Smart-seq+5' data as used in our [publication](https://www.cell.com/cell/fulltext/S0092-8674(24)01426-0). 
 
 These scripts should not be used out-of-the-box, they are intended to help the understanding of the computational separation of 5' fragments and internal (ELSE) fragments and in general the first processing steps of Smart-seq+5' data. Please adapt the script to work for your computational setup.
 
